@@ -40,8 +40,8 @@ export const GameForm = () => {
                 time_to_play: game.time_to_play,
                 age_rec: game.age_rec,
                 release_year: game.release_year,
-                description: game.description,
-                category: game.category
+                description: game.description
+                // category: game.category
             }
         createGame(newGame)
             .then(() => {
@@ -165,25 +165,33 @@ export const GameForm = () => {
                 </fieldset>
 
 
-                <fieldset>
+                {/* <fieldset>
+                            
                     <div className="form-group">
                         <label htmlFor="category">Select the Category:</label>
-                        <select defaultValue={'0'}
-                            onChange={
-                                (evt) => {
-                                    const copy = {...category}
-                                    copy.id = parseInt(evt.target.value)
-                                    updateGame(copy)
-                        }}>
+                    
+                        {categories.map(category => {
+                            return (
+                            <select defaultValue={'0'}
+                                onChange={
+                                    (evt) => {
+                                        const copy = {...category}
+                                        copy.id = parseInt(evt.target.value)
+                                        updateGame(copy)
+                                    }}>
                             <option value="0">Choose the Category...</option>
-                                {categories.map(category => {
-                                    return <option key={`categories--${category.id}`} value={category.id}>
-                                        {category.cat_name}
+                                        <option key={`categories--${category.id}`} value={category.id}>
+                                            {category.cat_name}       
                                         </option>
-                                })}
-                        </select>
+                            </select>
+                               )
+                        })}
+
+
+                           
                     </div>
-                </fieldset>
+                
+                </fieldset> */}
 
 
             <button type="submit"

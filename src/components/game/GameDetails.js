@@ -4,31 +4,35 @@
     for the game in GameList.
 */
 
-import { getCategories, getSingleGame } from "./GameManager.js"
+import { getCategories, getSingleGame, getReviews } from "./GameManager.js"
 import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
+
 
 export const GameDetails = () => {
     const [ games, setGame ] = useState([])
-    // const [ catData, setCatData ] = useState([])
-    const history = useHistory()
+    const [ categories, setCatData ] = useState([])
+    const [ reviews, setReviews ] = useState([])
     const id = useParams()
+    const history = useHistory()
 
     useEffect(() => {
         getSingleGame(id) 
             .then(data => setGame(data)) 
-        // getCategories
-        //     .then(catData => setCatData(catData))           
+        getCategories()
+            .then(categories => setCatData(categories)) 
+        getReviews()
+            .then(reviews => setReviews(reviews))                 
     }, 
         [])
 
+
+
+
     return (
 
-            <article className="singleGame">
-                    
-                {
-                   
+            <article className="singleGame">                    
+                <>                   
                         <section key={`game--${games.id}`} className="game">
                             <div className="game__title">Title: {games.title}</div>
                             <div className="game__designer">Designer: {games.designer}</div>
@@ -37,18 +41,40 @@ export const GameDetails = () => {
                             <div className="game__number">Number of Players: {games.number_of_players}</div>
                             <div className="game__time">Estimated Time to Play: {games.time_to_play} hours</div>
                             <div className="game__age">Age Recommendation: {games.age_rec} years</div>
+                                    {
+                                    reviews.map(review => {
+                                        { if (games.id === review.game)        
+                                        return <section key={`review--${reviews.id}`} className="review">
+                                        <div className="review__body">Review: {review.review_body}</div>
+                                        
+                                    </section>   
+                                        }
+                                    })
+                                    }
+
+                                <button type="submit"
+                                    onClick={evt => {
+                                        // Prevent form from being submitted
+                                        evt.preventDefault()
+                                            history.push(`/games/${games.id}/review`)
+                                    }}
+                                className="btn btn-primary">Review Game</button>
+
                         </section>   
                             
-                            // {
-                            //     categories.map(category => { 
-                            //         return <section key={`category--${category.id}`} className="category">
-                            //             if (category.id === gamecategory.category_id_id)                          
-                            //             <div className="game__category">Category: {category.cat_name}</div>
-                            //      })
-                            //      </section>
-                            //     }   
+                                {/* { 
+                                categories.map(category => {
+                                    if (games.id === gamecategory.game )                          
+                                 return (
+                                     
+                                <section key={`category--${category.id}`} className="category">
+                                        Category: {category.cat_name}
+                                </section>
+                                       
+                                     ) }
+                                )}  */}
                   
-                }
+               </>
             </article>
     )
 }

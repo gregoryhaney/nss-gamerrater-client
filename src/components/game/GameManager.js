@@ -24,6 +24,15 @@ export const getCategories = () => {
     }
 
 
+export const getReviews = () => {
+    return fetch("http://localhost:8000/reviews", {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`
+        }
+    })
+                .then(res => res.json())
+}
+
 
 // get a single, specific game to display in "GameDetails.js"
 export const getSingleGame = (id) => {
@@ -59,6 +68,21 @@ export const createGame = (game) => {
 })
         .then(response => response.json())
 }
+
+
+// create a new Review for a game
+export const createReview = (review) => {
+    return fetch("http://localhost:8000/reviews", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`
+        },
+        body: JSON.stringify(review)
+    })
+            .then(res => res.json())
+}
+
 
 
 // update an existing Game
