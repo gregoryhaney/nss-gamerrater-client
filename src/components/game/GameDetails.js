@@ -16,6 +16,7 @@ export const GameDetails = () => {
     const id = useParams()
     const history = useHistory()
 
+
     useEffect(() => {
         getSingleGame(id) 
             .then(data => setGame(data)) 
@@ -30,9 +31,9 @@ export const GameDetails = () => {
 
 
     return (
-
+    <>
             <article className="singleGame">                    
-                <>                   
+                   <>           
                         <section key={`game--${games.id}`} className="game">
                             <div className="game__title">Title: {games.title}</div>
                             <div className="game__designer">Designer: {games.designer}</div>
@@ -43,38 +44,46 @@ export const GameDetails = () => {
                             <div className="game__age">Age Recommendation: {games.age_rec} years</div>
                                     {
                                     reviews.map(review => {
-                                        { if (games.id === review.game)        
+                                        if (games.id === review.game)        
                                         return <section key={`review--${reviews.id}`} className="review">
                                         <div className="review__body">Review: {review.review_body}</div>
-                                        
-                                    </section>   
-                                        }
-                                    })
-                                    }
+                                     </section>                                  
+                                    })}    
+                                
+                                    {
+                                    categories.map(category => {
+                                        // if (ca )                          
+                                    return <section key={`category--${category.id}`} className="category">
+                                            Category: {category.cat_name}
+                                    </section>
+                                    })}
 
+                                    
+                                
                                 <button type="submit"
                                     onClick={evt => {
-                                        // Prevent form from being submitted
+                                        // Prevent form submission by browser's default behavior
                                         evt.preventDefault()
                                             history.push(`/games/${games.id}/review`)
                                     }}
                                 className="btn btn-primary">Review Game</button>
 
+
+                                <button type="submit"
+                                    onClick={evt => {
+                                        // Prevent form submission by browser's default behavior
+                                        evt.preventDefault()
+                                            history.push(`/games/${games.id}/update`)
+                                    }}
+                                className="btn btn-primary">Edit Game</button>
+
+
                         </section>   
                             
-                                {/* { 
-                                categories.map(category => {
-                                    if (games.id === gamecategory.game )                          
-                                 return (
-                                     
-                                <section key={`category--${category.id}`} className="category">
-                                        Category: {category.cat_name}
-                                </section>
-                                       
-                                     ) }
-                                )}  */}
-                  
                </>
             </article>
+    
+           
+        </>
     )
 }

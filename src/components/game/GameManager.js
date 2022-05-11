@@ -1,7 +1,8 @@
 
 
+/////////////////////// GETTER FUNCTIONS ///////////////////////////////////////
 
-// get all the Games
+                    // get all the Games
 export const getGames = () => {
 return fetch("http://localhost:8000/games", {
     headers: {
@@ -12,7 +13,7 @@ return fetch("http://localhost:8000/games", {
 
 }
 
-// get all the Categories
+                // get all the Categories
 export const getCategories = () => {
     return fetch("http://localhost:8000/categories", {
         headers: {
@@ -23,7 +24,7 @@ export const getCategories = () => {
     
     }
 
-
+                // get all the Reviews  
 export const getReviews = () => {
     return fetch("http://localhost:8000/reviews", {
         headers: {
@@ -34,7 +35,7 @@ export const getReviews = () => {
 }
 
 
-// get a single, specific game to display in "GameDetails.js"
+            // get a single, specific game to display in "GameDetails.js"
 export const getSingleGame = (id) => {
     return fetch(`http://localhost:8000/games/${id.id}`, {
         headers: {
@@ -45,18 +46,23 @@ export const getSingleGame = (id) => {
 }
 
 
-// get the specific Game to edit
-export const getGameToEdit = (id) => {
-    return fetch(`http://localhost:8000/games/${id.id}`, {
+                // get the specific Game to edit
+export const getGameToEdit = (gameId) => {
+    return fetch(`http://localhost:8000/games/${gameId}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
     })
+            .then(res => res.json())
 }
+////////////////////////////////////////////////////////////////////////////////
 
 
 
-// create a new Game
+
+/////////////////////// CREATE FUNCTIONS ///////////////////////////////////////
+
+                 // create a new Game
 export const createGame = (game) => {
     return fetch("http://localhost:8000/games", {
     method: "POST",
@@ -70,7 +76,7 @@ export const createGame = (game) => {
 }
 
 
-// create a new Review for a game
+                // create a new Review for a game
 export const createReview = (review) => {
     return fetch("http://localhost:8000/reviews", {
         method: "POST",
@@ -82,18 +88,4 @@ export const createReview = (review) => {
     })
             .then(res => res.json())
 }
-
-
-
-// update an existing Game
-export const updateGame = (updatedGame) => {
-    return fetch("http://localhost:8000/games", {
-        method: "PUT",
-        headers: {
-            "content-type": "application/json",
-           "Authorization": `Token ${localStorage.getItem("lu_token")}`
-        },
-        body: JSON.stringify(updatedGame)
-    })
-            .then(res => res.json())
-}
+ 

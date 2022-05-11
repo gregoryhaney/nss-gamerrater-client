@@ -4,7 +4,7 @@
     [ http://localhost:8000/games/{id} ]
 */
 import { Link } from 'react-router-dom'
-import { getGames, getSingleGame } from "./GameManager.js"
+import { getGames } from "./GameManager.js"
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 
@@ -19,9 +19,7 @@ export const GameList = () => {
     }, 
         [])
 
-
-
-
+        
     return (
 
             <article className="games">

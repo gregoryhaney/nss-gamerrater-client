@@ -1,39 +1,42 @@
 /*
     The purpose of this component is to provide a form for
-    creating a new game and adding it to the DB.
+    editing a game and updating the DB.
 */
 
 import React, { useState, useEffect } from "react"
-import { useHistory } from 'react-router-dom'
-import { createGame, getCategories } from './GameManager.js'
+import { useHistory, useParams } from 'react-router-dom'
+import { getGameToEdit } from './GameManager.js'
 
-export const GameForm = () => {  
-    
-    const [ game, updateGame ] = useState({
-        title: "",
-        designer: "",
-        number_of_players: 0,
-        time_to_play: 0,
-        age_rec: 0,
-        description: "",
-        release_year: 0
-    })
 
+/*
+   **********************************************************************************
+   **                                                                              **
+   **      TODO: prevent update/edit unless current gamer/user created the game    **
+   **                                                                              **
+   **********************************************************************************
+*/
+
+export const EditGameForm = () => {  
+    const id = useParams()
     const history = useHistory()
-    const [ categories, setGameCategories ] = useState([])
+    const gameId = id.gameId
+
+   
+    const [ gameToEdit, setGameToEdit ] = useState([])
+    const [ game, updateGame ] = useState({})
 
     
     useEffect(() => {
-           // get the categories
-           getCategories()
-            .then((categoriesArray) => {
-               setGameCategories(categoriesArray)
+           // get the game to be updated
+           getGameToEdit(gameId)
+            .then((editGameArray) => {
+               setGameToEdit(editGameArray)
            })
     }, [])
 
-    const submitNewGame = (evt) => {
-            // the onChange FN to build the new Game object
-            const newGame = {
+    
+            // the onChange FN to build the updated Game object
+            const editGame = {
                 title: game.title,
                 designer: game.designer,
                 number_of_players: game.number_of_players,
@@ -41,22 +44,33 @@ export const GameForm = () => {
                 age_rec: game.age_rec,
                 release_year: game.release_year,
                 description: game.description,
-                category: game.category
+                gamer: gameToEdit.gamer
             }
-        createGame(newGame)
-            .then(() => {
-                history.push("/games")
-            })
-    }
+     
+
+                const makeTheUpdate = () => {
+                    const fetchOption = {
+                        method: "PUT",
+                        headers:  {
+                            "Content-Type": "application/json",
+                            "Authorization": `Token ${localStorage.getItem("lu_token")}`
+                        },
+                        body: JSON.stringify(editGame)
+                    }
+                    return fetch (`http://localhost:8000/games/${gameId}`, fetchOption)
+                        .then(() => {
+                            history.push("/games")
+                        })
+                }
 
     return (
         <form className="gameForm">
-            <h2 className="gameForm_title">Register Your New Game</h2>
+            <h2 className="gameForm_title">Edit Your Game</h2>
                 <fieldset>
                 <div className="form-group">
                         <label htmlFor="title">Title: </label>
                         <input type="text" name="title" required autoFocus className="form-control"
-                            value={game.title}
+                            placeholder={gameToEdit.title}
                             onChange={
                                 (evt) => {
                                     const copy = {...game}
@@ -72,7 +86,7 @@ export const GameForm = () => {
                         <div className="form-group">
                             <label htmlFor="designer">Designer: </label>
                             <input type="text" name="designer" required autoFocus className="form-control"
-                                value={game.designer}
+                                placeholder={gameToEdit.designer}
                                 onChange={
                                     (evt) => {
                                         const copy = {...game}
@@ -88,6 +102,7 @@ export const GameForm = () => {
                         <div className="form-group">
                             <label htmlFor="description">Description: </label>
                             <input type="text" name="description" required autoFocus className="form-control"
+                                placeholder={gameToEdit.description}
                                 value={game.description}
                                 onChange={
                                     (evt) => {
@@ -104,6 +119,7 @@ export const GameForm = () => {
                         <div className="form-group">
                             <label htmlFor="year">Year Released: </label>
                             <input type="number" name="year" required autoFocus className="form-control"
+                                placeholder={gameToEdit.release_year}
                                 value={game.release_year}
                                 onChange={
                                     (evt) => {
@@ -120,6 +136,7 @@ export const GameForm = () => {
                         <div className="form-group">
                             <label htmlFor="players">Number of Players: </label>
                             <input type="number" name="players" required autoFocus className="form-control"
+                                placeholder={gameToEdit.number_of_players}
                                 value={game.number_of_players}
                                 onChange={
                                     (evt) => {
@@ -136,6 +153,7 @@ export const GameForm = () => {
                         <div className="form-group">
                             <label htmlFor="time">Estimated Time to Play: </label>
                             <input type="number" name="time" required autoFocus className="form-control"
+                                placeholder={gameToEdit.time_to_play}
                                 value={game.time_to_play}
                                 onChange={
                                     (evt) => {
@@ -152,6 +170,7 @@ export const GameForm = () => {
                         <div className="form-group">
                             <label htmlFor="age">Recommended Age: </label>
                             <input type="number" name="age" required autoFocus className="form-control"
+                                placeholder={gameToEdit.age_rec}
                                 value={game.age_rec}
                                 onChange={
                                     (evt) => {
@@ -165,53 +184,18 @@ export const GameForm = () => {
                 </fieldset>
 
 
-                <fieldset>
-                            
-                    <div className="form-group">
-                        <label htmlFor="category">Select the Category:</label>
-
-
-                        <select defaultValue={'0'}
-
-                                onChange={
-                                    (evt) => {
-                                        const copy = {...game}
-                                        copy.category = parseInt(evt.target.value)
-                                        updateGame(copy)
-                                    }}>
-
-                                        <option value="0">Choose the Category...</option>
-
-                        {
-                        categories.map(category => {
-                            return <option key={`categories--${category.id}`} value={category.id}>
-                                {category.cat_name}   
-                                
-                            </option>
-                        }
-                        )   }
-                    
-                            </select>                      
-                    </div>
-                </fieldset>
 
 
             <button type="submit"
                 onClick={evt => {
-                    // Prevent form from being submitted
+                    // Prevent form submission through browser's default behavior
                     evt.preventDefault()
-                        submitNewGame(game)
+                       {makeTheUpdate()}
                 }}
-                className="btn btn-primary">Create</button>
+                className="btn btn-primary">Save Changes</button>
 
         </form>
 
     )
 }
-
-
-
-
-
-
                 
