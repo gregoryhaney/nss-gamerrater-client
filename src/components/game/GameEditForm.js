@@ -20,7 +20,6 @@ export const EditGameForm = () => {
     const id = useParams()
     const history = useHistory()
     const gameId = id.gameId
-
    
     const [ gameToEdit, setGameToEdit ] = useState([])
     const [ game, updateGame ] = useState({})
@@ -195,7 +194,6 @@ export const EditGameForm = () => {
                 className="btn btn-primary">Save Changes</button>
 
         </form>
-
     )
 }
                 

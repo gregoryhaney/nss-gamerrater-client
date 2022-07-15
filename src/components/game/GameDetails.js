@@ -15,7 +15,20 @@ export const GameDetails = () => {
     const [ reviews, setReviews ] = useState([])
     const id = useParams()
     const history = useHistory()
+    
 
+/*
+   **********************************************************************************
+   **                                                                              **
+   **      TODO: finish=>  radio buttons have no functionality at this time        **
+   **                                                                              **
+   **********************************************************************************
+*/
+
+    const handleChange = () => {
+        const myRating = FormData.get(rating)
+        console.log(myRating)
+    }
 
     useEffect(() => {
         getSingleGame(id) 
@@ -58,8 +71,110 @@ export const GameDetails = () => {
                                     </section>
                                     })}
 
-                                    
+                                    <h3>My Rating:</h3>
+                                <fieldset>
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="1"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "1"}
+                                            />
+                                            <span>1</span>
+                                        </label>
+                                    </div> 
+
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="2"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "2"}
+                                            />
+                                            <span>2</span>
+                                        </label>
+                                    </div>    
+
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="3"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "3"}
+                                            />
+                                            <span>3</span>
+                                        </label>
+                                    </div>       
+
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="4"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "4"}
+                                            />
+                                            <span>4</span>
+                                        </label>
+                                    </div>                                    
                                 
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="5"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "5"}
+                                            />
+                                            <span>5</span>
+                                        </label>
+                                    </div>                                    
+                               
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="6"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "6"}
+                                            />
+                                            <span>6</span>
+                                        </label>
+                                    </div>                                    
+                               
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="7"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "7"}
+                                            />
+                                            <span>7</span>
+                                        </label>
+                                    </div>                                    
+                                
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="8"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "8"}
+                                            />
+                                            <span>8</span>
+                                        </label>
+                                    </div>                                    
+                                
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="9"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "9"}
+                                            />
+                                            <span>9</span>
+                                        </label>
+                                    </div>                                    
+                                
+                                    <div className="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="10"
+                                            onChange={handleChange}
+                                            checked={FormData.rating === "10"}
+                                            />
+                                            <span>10</span>
+                                        </label>
+                                    </div>                                    
+                                </fieldset>        
+
+
                                 <button type="submit"
                                     onClick={evt => {
                                         // Prevent form submission by browser's default behavior
@@ -78,12 +193,9 @@ export const GameDetails = () => {
                                 className="btn btn-primary">Edit Game</button>
 
 
-                        </section>   
-                            
+                        </section>                              
                </>
-            </article>
-    
-           
+            </article> 
         </>
     )
 }

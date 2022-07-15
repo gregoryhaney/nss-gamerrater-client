@@ -164,22 +164,16 @@ export const GameForm = () => {
                         </div>
                 </fieldset>
 
-
-                <fieldset>
-                            
+                <fieldset>                            
                     <div className="form-group">
                         <label htmlFor="category">Select the Category:</label>
-
-
                         <select defaultValue={'0'}
-
                                 onChange={
                                     (evt) => {
                                         const copy = {...game}
                                         copy.category = parseInt(evt.target.value)
                                         updateGame(copy)
                                     }}>
-
                                         <option value="0">Choose the Category...</option>
 
                         {
@@ -205,13 +199,6 @@ export const GameForm = () => {
                 className="btn btn-primary">Create</button>
 
         </form>
-
     )
 }
-
-
-
-
-
-
-                
+               
